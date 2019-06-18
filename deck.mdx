@@ -1,0 +1,286 @@
+import { Invert, Split, FullScreenCode } from "mdx-deck/layouts";
+import { Head, Notes, Image } from "mdx-deck";
+export { default as theme } from "@mdx-deck/themes";
+
+# hello.
+
+<Notes>
+  INTRO: For those of you who didn't read the meetup description, my name is
+  Gabriella, I'm a frontend engineer at Guru, and I'm gonna be talking about
+  Next.js, a JS framework created by Zeit.
+</Notes>
+
+---
+
+![](https://coffeencoding.com/wp-content/uploads/2019/03/next-js.png)
+
+#### (and why you should try it)
+
+<Notes>
+  One of the things I always think about when using a new technology, framework,
+  or library is what probelem is it going to solve for me as a developer.
+  Next.js is a minimalistic framework for rendering React applications on the
+  server. The problem I found it to solve is getting a React application up an
+  running fast with little preliminary work. I also think it's great for those
+  of you who are just getting into building React apps because it takes a lot of
+  the headache out of setting up an Express server with node and webpack. If
+  you're someone who does like customization, you can definitely do that with
+  Next.
+</Notes>
+
+---
+
+#### Some pretty cool sites that currently run with Next.js...
+
+- https://syntax.fm/
+- https://www.npmjs.com/
+- https://material-ui.com/
+
+---
+
+<div style={{ padding: "20px" }}>
+  <div style={{ padding: "20px", fontSize: "30px" }}>
+    Next.js offers some tooling that could simplify your dev process out of the
+    box!
+  </div>
+</div>
+
+![](https://secure.i.telegraph.co.uk/multimedia/archive/03188/maru_the_cat__3188629b.jpg)
+
+<Notes>
+  Server-rendered by default, Automatic code splitting for faster page loads,
+  Simple client-side routing (page based), Webpack-based dev environment which
+  supports Hot Module Replacement (HMR), Able to implement with Express or any
+  other Node.js HTTP server, Customizable with your own Babel and Webpack
+  configurations
+</Notes>
+
+---
+
+<Notes>
+  I think SSR-rendering is one of the coolest things Next offers out of the box.
+</Notes>
+
+<Invert>Server side rendered by default.
+
+```jsx
+<h1>I will not litter this slide with a wow meme</h1>
+```
+
+</Invert>
+
+---
+
+<Notes>
+  When I first started building apps I used Create-react-app a lot since I
+  didn't want to be bothered with setting up webpack config, create-react-app
+  pretty much did it for me. At the time I was more concerned with learning
+  React then going down the webpack rabbit hole. Don't get me wrong, it's great
+  to know what's going on under the hood with React and how webpack works, but
+  sometimes it's better to just get up and running fast, and be able to learn
+  and build a react app.
+</Notes>
+
+# But in this one I will
+
+![](https://media1.tenor.com/images/e5dab3697b62150a3b5b0f4b1a1f76f5/tenor.gif?itemid=5571450)
+
+---
+
+<Notes>
+  Although I didn't have to set up Webpack in my CRA since CRA does that for you
+  under the hood, I did have to familiarize myself with some minimal backend
+  requirements like spinning up a node server with Express. In Next you don't
+  have to do any of this unless you want to (Next plays nice with Express if you
+  want to use it to do more complex SSR) I do think it's valuable to familiarize
+  yourself with Express and using Node, but it really just depends on what
+  you're trying to accomplish. If you wanna get up and running with React app,
+  Next is definitely a great checkout since you won't need to configure much of
+  anything unless you want to
+</Notes>
+
+---
+
+<Notes>
+  The main difference is that for SSR your server’s response to the browser is
+  the HTML of your page that is ready to be rendered, while for CSR the browser
+  gets a pretty empty document with links to your javascript. That means your
+  browser will start rendering the HTML from your server without having to wait
+  for all the JavaScript to be downloaded and executed. In both cases, React
+  will need to be downloaded and go through the same process of building a
+  virtual dom and attaching events to make the page interactive — but for SSR,
+  the user can start viewing the page while all of that is happening. For the
+  CSR world, you need to wait for all of the above to happen and then have the
+  virtual dom moved to the browser dom for the page to be viewable.
+</Notes>
+
+<Split>
+
+![](https://cdn-images-1.medium.com/max/1000/1*jJkEQpgZ8waQ5P-W5lhxuQ.png)
+
+![](https://cdn-images-1.medium.com/max/1000/1*CRiH0hUGoS3aoZaIY4H2yg.png)
+
+</Split>
+
+---
+
+### Ok, but first bundling.
+
+![](https://pbs.twimg.com/media/DPWLCrcWsAA_xnd.jpg)
+
+<Notes>
+  Another thing that next offers is automatic code splitting...I'll get into
+  this in a sec, but first I'll go over go over what bundling is. Most React
+  apps will have their files “bundled” using tools like Webpack or Browserify.
+  Bundling is the process of following imported files and merging them into a
+  single file: a “bundle”. This bundle can then be included on a webpage to load
+  an entire app at once. To avoid winding up with a large bundle, it’s good to
+  get ahead of the problem and start “splitting” your bundle. Code-Splitting is
+  a feature supported by bundlers like Webpack and Browserify (via
+  factor-bundle) which can create multiple bundles that can be dynamically
+  loaded at runtime.
+</Notes>
+
+---
+
+<Notes>
+  Code-splitting your app can help you “lazy-load” just the things that are
+  currently needed by the user, which can dramatically improve the performance
+  of your app. While you haven’t reduced the overall amount of code in your app,
+  you’ve avoided loading code that the user may never need, and reduced the
+  amount of code needed during the initial load. Next.js does automatic code
+  splitting and it is based on the pages in your app. For example, if one of
+  your modules is used at-least in half of your pages, then it moves into the
+  main JavaScript bundle. If not, that module stays inside the page's bundle. In
+  Next: Every import you declare gets bundled and served with each `page`. That
+  means pages never load unnecessary code!
+</Notes>
+
+back to...
+
+### Automatic Code Splitting
+
+![](https://i.imgflip.com/1iqjer.jpg?a433344)
+
+---
+
+import Highlight from "react-highlight";
+
+### Simple page-based routing!
+
+<Notes>
+  Next.js does not ship a routes manifest with every possible route in the
+  application, so the current page is not aware of any other pages on the client
+  side. All subsequent routes get lazy-loaded, for scalability sake. For more
+  complex situations, you do have the ability to map your routes in Next. The
+  way routing works in Next is you create a `pages` directory, Next is
+  automatically set up to look for that directory containing all of your routes.
+  From there you create the named component of whatever the route is, for
+  example, About.js and next automatically routes your About page.
+</Notes>
+
+- Create `pages` directory
+
+- Create `index.js` (where all your routes live)
+
+- Add component route views inside `pages`
+
+- e.g. `About.js`, `YoyoCollection.js`, etc.
+
+---
+
+### Clean URLS with Route Masking
+
+![](https://i.postimg.cc/qRD6j6mx/carbon.png)
+
+<Notes>
+  Another feature of next is Route Masking. Basically, it will show a different
+  URL on the browser than the actual URL that your app sees.
+</Notes>
+
+---
+
+![](https://i.postimg.cc/HnpHc60S/rrr.png)
+
+<Notes>
+  In the Link element, we have used another prop called “as”. That's the URL
+  which we need to show on the browser. The URL your app sees is mentioned in
+  the “href” prop. Now try to click on the first blog post and you'll be
+  navigated to the blog post. After that, hit the back button and then hit the
+  forward button you'd go back to the index page and navigate to the post page.
+</Notes>
+
+---
+
+### Hot Module Replacement
+
+`what is it?`
+
+<Notes>HMR is fire. Go to next slide!</Notes>
+
+---
+
+<Invert>
+
+<Split>
+
+![](https://cdn-images-1.medium.com/max/1000/1*VjS1jczyKmuJplMVH4eifg.png)
+
+![](https://survivejs.com/9c047192511d48ae8607288c975a7e59.png)
+
+</Split>
+
+</Invert>
+
+<Notes>
+  In NextJS HMR works instantly. There's no need to set anything up. Hot Module
+  Replacement (HMR) exchanges, adds, or removes modules while an application is
+  running, without a full reload. This can significantly speed up development in
+  a few ways: Retain application state which is lost during a full reload, Save
+  valuable development time by only updating what's changed, Modifications made
+  to CSS/JS in the source code results in an instant browser update which is
+  almost comparable to changing styles directly in the browser's dev tools.
+</Notes>
+
+---
+
+<Invert>
+
+# One last thing to wrap up Next.js
+
+</Invert>
+
+---
+
+### Deploying your Next application
+
+<Notes>
+  If you're wondering how to deploy, Next makes this process pretty simple with
+  Zeit by adding two scripts in your package.json. Using ZEIT Now, add the
+  following scripts to the package.json file:
+</Notes>
+
+![](https://i.postimg.cc/VsDpYfTQ/build.png)
+
+---
+
+![](https://i.postimg.cc/T1zs59Dy/deploy.png)
+
+<Notes>
+  Next, create a next.config.js file in the root of the project and specify
+  target as 'serverless': Basically, you run the “now” command from your
+  terminal inside your app's root directory. Then, create a now.json file in the
+  root of your project with the following contents:
+</Notes>
+
+---
+
+Thank you for listening to me speak about Next.js.
+
+![](https://i.imgur.com/jGkiFbt.gif)
+
+<Notes>
+  Hopefully I got you interested in the Next framework (there are definitely
+  other ones out there). This was my first meetup talk ever. I want to thank Dom
+  for encouraging me to do this!
+</Notes>
