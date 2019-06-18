@@ -11,9 +11,9 @@
     "raw-loader": "^3.0.0"
   },
   "scripts": {
-    "start-slides": "mdx-deck deck.mdx",
-    "dev": "next",
-    "pdf": "mdx-deck pdf deck.mdx"
+    "start": "mdx-deck deck.mdx",
+    "pdf": "mdx-deck pdf deck.mdx",
+    "build": "mdx-deck build deck.mdx"
   },
   "dependencies": {
     "express": "^4.17.1",
